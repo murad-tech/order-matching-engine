@@ -4,22 +4,18 @@ public class Order {
     private final String orderId;
     private final String userId;
 
-    private final String ticker;
+    private final String symbol;
     private final OrderType type;
     private final double price;
     private final int quantity;             // integer - fractional shares out of scope
-    private final int remainingQuantity;    // if there are no enough matching Orders
-    private final OrderStatus status;
+    private int remainingQuantity;          // if there are no enough matching Orders
+    private OrderStatus status;
     private final long timestamp;
-
-    Order next;
-    Order prev;
-    PriceLevel parentLevel;
 
     public Order(
             String orderId,
             String userId,
-            String ticker,
+            String symbol,
             OrderType type,
             double price,
             int quantity,
@@ -27,7 +23,7 @@ public class Order {
     ) {
         this.orderId = orderId;
         this.userId = userId;
-        this.ticker = ticker;
+        this.symbol = symbol;
         this.type = type;
         this.price = price;
         this.quantity = quantity;
@@ -45,8 +41,8 @@ public class Order {
         return userId;
     }
 
-    public String getTicker() {
-        return ticker;
+    public String getSymbol() {
+        return symbol;
     }
 
     public OrderType getType() {
@@ -71,5 +67,22 @@ public class Order {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public boolean isActive() {
+        return status == OrderStatus.PENDING || status == OrderStatus.PARTIALLY_FILLED;
+    }
+
+    public boolean isFilled() {
+        return status == OrderStatus.FILLED;
+    }
+
+    public void reduceQuantity(int tradeQuantity) {
+        // Implementation to reduce remaining quantity and update status
+        this.remainingQuantity -= tradeQuantity;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }
