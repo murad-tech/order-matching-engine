@@ -13,6 +13,7 @@ public class OrderBookImpl implements OrderBook {
     private final TreeMap<Double, LinkedList<Order>> buyOrders;
     private final TreeMap<Double, LinkedList<Order>> sellOrders;
 
+    // Map of orderId -> Order for quick lookups
     private final Map<String, Order> orderMap;
 
     public OrderBookImpl(String symbol) {
@@ -28,7 +29,7 @@ public class OrderBookImpl implements OrderBook {
             throw new IllegalArgumentException("Order symbol does not match order book");
         }
 
-        List<Trade> trades = new ArrayList<>();
+        List<Trade> trades;
 
         // Try to match the order first
         if (order.getType() == OrderType.BUY) {
@@ -132,7 +133,7 @@ public class OrderBookImpl implements OrderBook {
         } else
             sellOrder.setStatus(OrderStatus.PARTIALLY_FILLED);
 
-        return new Trade(buyOrder.getOrderId(), sellOrder.getOrderId(), price, tradeQuantity);
+        return new Trade(buyOrder.getOrderId(), sellOrder.getOrderId(), symbol, price, tradeQuantity);
     }
 
     /**
@@ -162,7 +163,10 @@ public class OrderBookImpl implements OrderBook {
             }
         }
 
-        return orderMap.remove(order.getOrderId());
+        Order cancelledOrder = orderMap.remove(order.getOrderId());
+        cancelledOrder.setStatus(OrderStatus.CANCELED);
+
+        return cancelledOrder;
     }
 
     @Override
@@ -172,12 +176,12 @@ public class OrderBookImpl implements OrderBook {
 
     @Override
     public double getBestBid() {
-        return buyOrders.isEmpty() ? null : buyOrders.firstKey();
+        return buyOrders.isEmpty() ? 0 : buyOrders.firstKey();
     }
 
     @Override
     public double getBestAsk() {
-        return sellOrders.isEmpty() ? null : sellOrders.firstKey();
+        return sellOrders.isEmpty() ? 0 : sellOrders.firstKey();
     }
 
     @Override
