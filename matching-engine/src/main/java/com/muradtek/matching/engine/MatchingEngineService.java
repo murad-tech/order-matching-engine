@@ -1,6 +1,5 @@
 package com.muradtek.matching.engine;
 
-
 import com.muradtek.matching.models.Order;
 import com.muradtek.matching.models.Trade;
 
@@ -60,4 +59,3 @@ public interface MatchingEngineService {
      */
     int getTotalOrdersForSymbol(String symbol);
 }
-

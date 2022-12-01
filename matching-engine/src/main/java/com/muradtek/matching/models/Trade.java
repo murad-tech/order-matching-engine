@@ -1,5 +1,8 @@
 package com.muradtek.matching.models;
 
+import lombok.Getter;
+
+@Getter
 public class Trade {
     private final String buyOrderId;
     private final String sellOrderId;
@@ -15,25 +18,5 @@ public class Trade {
         this.price = price;
         this.quantity = quantity;
         this.timestamp = System.currentTimeMillis();
-    }
-
-    public String getBuyOrderId() {
-        return buyOrderId;
-    }
-    public String getSellOrderId() {
-        return sellOrderId;
-    }
-    public double getPrice() {
-        return price;
-    }
-    public int getQuantity() {
-        return quantity;
-    }
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public String getSymbol() {
-        return symbol;
     }
 }
