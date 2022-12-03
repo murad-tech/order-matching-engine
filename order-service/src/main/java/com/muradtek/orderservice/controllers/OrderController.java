@@ -39,12 +39,17 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public ResponseEntity<Order> getOrder(@PathVariable String orderId) {
-        return ResponseEntity.ok(matchingEngineService.getOrder(orderId));
+        Order order = matchingEngineService.getOrder(orderId);
+
+        if (order == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(order);
     }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> cancelOrder(@PathVariable String orderId) {
-        matchingEngineService.cancelOrder(orderId);
-        return ResponseEntity.noContent().build();
+        boolean result = matchingEngineService.cancelOrder(orderId);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

@@ -1,6 +1,5 @@
 package com.muradtek.matching.models;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +14,8 @@ public class Order {
     private final String symbol;
     private final OrderType type;
     private final double price;
-    private final int quantity;                 // integer - fractional shares out of scope
-    private int remainingQuantity;   // if there are no enough matching Orders
+    private final int quantity; // integer - fractional shares out of scope
+    private int remainingQuantity; // if there are no enough matching Orders
     private OrderStatus status;
     private final long timestamp;
 

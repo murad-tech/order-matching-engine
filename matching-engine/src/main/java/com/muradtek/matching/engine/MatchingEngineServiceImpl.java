@@ -5,7 +5,6 @@ import com.muradtek.matching.models.OrderStatus;
 import com.muradtek.matching.models.Trade;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,8 +33,7 @@ public class MatchingEngineServiceImpl implements MatchingEngineService {
         // Get or create order book for symbol
         OrderBook orderBook = orderBooks.computeIfAbsent(
                 symbol,
-                k -> new OrderBookImpl(symbol)
-        );
+                k -> new OrderBookImpl(symbol));
 
         // Track order-to-symbol mapping
         orderToSymbolMap.put(order.getOrderId(), symbol);
