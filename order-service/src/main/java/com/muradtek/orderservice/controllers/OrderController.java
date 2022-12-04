@@ -6,6 +6,7 @@ import com.muradtek.matching.models.Trade;
 import com.muradtek.orderservice.dto.SubmitOrderReqDto;
 import com.muradtek.orderservice.dto.SubmitOrderResDto;
 import com.muradtek.orderservice.mappers.OrderMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/orders")
+@Tag(name = "Order Controller", description = "APIs for submitting, retrieving, and canceling orders")
 public class OrderController {
     private final MatchingEngineService matchingEngineService;
     private final OrderMapper orderMapper;
