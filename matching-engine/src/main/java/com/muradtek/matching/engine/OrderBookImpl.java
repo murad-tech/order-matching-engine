@@ -116,7 +116,7 @@ public class OrderBookImpl implements OrderBook {
      * Trade price is the passive (resting) order's price.
      */
     private Trade executeTrade(Order buyOrder, Order sellOrder, double price) {
-        int tradeQuantity = Math.min(buyOrder.getQuantity(), sellOrder.getQuantity());
+        int tradeQuantity = Math.min(buyOrder.getRemainingQuantity(), sellOrder.getRemainingQuantity());
 
         buyOrder.reduceQuantity(tradeQuantity);
         sellOrder.reduceQuantity(tradeQuantity);

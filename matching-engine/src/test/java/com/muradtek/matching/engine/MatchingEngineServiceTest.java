@@ -43,6 +43,118 @@ class MatchingEngineServiceTest {
     }
 
     @Test
+    void shouldMatchPartialBuyAndUpdateRemainingQuantity() {
+        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
+        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 10, System.currentTimeMillis());
+
+        matchingEngine.submitOrder(sellOrder);
+        List<Trade> trades = matchingEngine.submitOrder(buyOrder);
+
+        assertEquals(1, trades.size());
+        Trade trade = trades.get(0);
+        assertEquals("AAPL", trade.getSymbol());
+        assertEquals(155, trade.getPrice());
+        assertEquals(5, trade.getQuantity());
+        assertEquals(1, matchingEngine.getTotalOrders()); // Buy order partially filled
+        assertEquals(OrderStatus.PARTIALLY_FILLED, buyOrder.getStatus());
+        assertEquals(OrderStatus.FILLED, sellOrder.getStatus());
+        assertEquals(0, sellOrder.getRemainingQuantity());
+        assertEquals(5, buyOrder.getRemainingQuantity());
+    }
+
+    @Test
+    void shouldMatchPartialSellAndUpdateRemainingQuantity() {
+        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 10, System.currentTimeMillis());
+
+        matchingEngine.submitOrder(buyOrder);
+        List<Trade> trades = matchingEngine.submitOrder(sellOrder);
+
+        assertEquals(1, trades.size());
+        Trade trade = trades.get(0);
+        assertEquals("AAPL", trade.getSymbol());
+        assertEquals(155, trade.getPrice());
+        assertEquals(5, trade.getQuantity());
+        assertEquals(1, matchingEngine.getTotalOrders()); // Buy order partially filled
+        assertEquals(OrderStatus.PARTIALLY_FILLED, sellOrder.getStatus());
+        assertEquals(OrderStatus.FILLED, buyOrder.getStatus());
+        assertEquals(0, buyOrder.getRemainingQuantity());
+        assertEquals(5, sellOrder.getRemainingQuantity());
+    }
+
+    @Test
+    void shouldProcessMultipleBuyOrders() {
+        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 100, System.currentTimeMillis());
+        Order buyOrder1 = new Order("u1", "AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
+        Order buyOrder2 = new Order("u1", "AAPL", OrderType.BUY, 155, 100, System.currentTimeMillis());
+
+        matchingEngine.submitOrder(sellOrder);
+        List<Trade> trades = matchingEngine.submitOrder(buyOrder1);
+        assertEquals(1, trades.size());
+        assertEquals(30, trades.get(0).getQuantity());
+        assertEquals(70, sellOrder.getRemainingQuantity());
+
+        trades = matchingEngine.submitOrder(buyOrder2);
+        assertEquals(1, trades.size());
+        assertEquals(70, trades.get(0).getQuantity());
+        assertEquals(0, sellOrder.getRemainingQuantity());
+        assertEquals(30, buyOrder2.getRemainingQuantity());
+    }
+
+    @Test
+    void shouldProcessMultipleSellOrders() {
+        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 100, System.currentTimeMillis());
+        Order sellOrder1 = new Order("u1", "AAPL", OrderType.SELL, 155, 30, System.currentTimeMillis());
+        Order sellOrder2 = new Order("u1", "AAPL", OrderType.SELL, 155, 100, System.currentTimeMillis());
+
+        matchingEngine.submitOrder(buyOrder);
+        List<Trade> trades = matchingEngine.submitOrder(sellOrder1);
+        assertEquals(1, trades.size());
+        assertEquals(30, trades.get(0).getQuantity());
+        assertEquals(70, buyOrder.getRemainingQuantity());
+
+        trades = matchingEngine.submitOrder(sellOrder2);
+        assertEquals(1, trades.size());
+        assertEquals(70, trades.get(0).getQuantity());
+        assertEquals(0, buyOrder.getRemainingQuantity());
+        assertEquals(30, sellOrder2.getRemainingQuantity());
+    }
+
+    @Test
+    void shouldMatchTwoBuyOrdersWithOneSell() {
+        Order buyOrder1 = new Order("u1", "AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
+        Order buyOrder2 = new Order("u1", "AAPL", OrderType.BUY, 155, 70, System.currentTimeMillis());
+        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 200, System.currentTimeMillis());
+
+        matchingEngine.submitOrder(buyOrder1);
+        matchingEngine.submitOrder(buyOrder2);
+        List<Trade> trades = matchingEngine.submitOrder(sellOrder);
+        assertEquals(2, trades.size());
+        assertEquals(30, trades.get(0).getQuantity());
+        assertEquals(70, trades.get(1).getQuantity());
+        assertEquals(100, sellOrder.getRemainingQuantity());
+        assertEquals(0, buyOrder1.getRemainingQuantity());
+        assertEquals(0, buyOrder2.getRemainingQuantity());
+    }
+
+    @Test
+    void shouldMatchTwoSellOrdersWithOneBuy() {
+        Order sellOrder1 = new Order("u1", "AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
+        Order sellOrder2 = new Order("u1", "AAPL", OrderType.BUY, 155, 70, System.currentTimeMillis());
+        Order buyOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 200, System.currentTimeMillis());
+
+        matchingEngine.submitOrder(sellOrder1);
+        matchingEngine.submitOrder(sellOrder2);
+        List<Trade> trades = matchingEngine.submitOrder(buyOrder);
+        assertEquals(2, trades.size());
+        assertEquals(30, trades.get(0).getQuantity());
+        assertEquals(70, trades.get(1).getQuantity());
+        assertEquals(100, buyOrder.getRemainingQuantity());
+        assertEquals(0, sellOrder1.getRemainingQuantity());
+        assertEquals(0, sellOrder2.getRemainingQuantity());
+    }
+
+    @Test
     void shouldMatchOrdersForSameSymbol() {
         Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
         Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
