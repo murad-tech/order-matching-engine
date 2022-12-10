@@ -25,7 +25,7 @@ class OrderBookTest {
 
     @Test
     void shouldCreateNewBuyOrder() {
-        Order order = new Order("u1", "AAPL", OrderType.BUY, 100, 5, System.currentTimeMillis());
+        Order order = new Order("AAPL", OrderType.BUY, 100, 5, System.currentTimeMillis());
 
         List<Trade> trades = orderBook.addOrder(order);
 
@@ -36,7 +36,7 @@ class OrderBookTest {
 
     @Test
     void shouldCreateNewSellOrder() {
-        Order order = new Order("u2", "AAPL", OrderType.SELL, 155, 10, System.currentTimeMillis());
+        Order order = new Order("AAPL", OrderType.SELL, 155, 10, System.currentTimeMillis());
 
         List<Trade> trades = orderBook.addOrder(order);
 
@@ -47,8 +47,8 @@ class OrderBookTest {
 
     @Test
     void shouldMatchBuyOrderWithExistingSellOrder() {
-        Order sellOrder = new Order("u2", "AAPL", OrderType.SELL, 150, 10, System.currentTimeMillis());
-        Order buyOrder = new Order("u3", "AAPL", OrderType.BUY, 150, 10, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 150, 10, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 150, 10, System.currentTimeMillis());
 
         orderBook.addOrder(sellOrder);
         List<Trade> trades = orderBook.addOrder(buyOrder);
@@ -64,8 +64,8 @@ class OrderBookTest {
 
     @Test
     void shouldHaveRemainingQuantityAfterMatch() {
-        Order sellOrder = new Order("u2", "AAPL", OrderType.SELL, 150, 100, System.currentTimeMillis());
-        Order buyOrder = new Order("u3", "AAPL", OrderType.BUY, 150, 10, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 150, 100, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 150, 10, System.currentTimeMillis());
 
         orderBook.addOrder(sellOrder);
         List<Trade> trades = orderBook.addOrder(buyOrder);
@@ -82,8 +82,8 @@ class OrderBookTest {
 
     @Test
     void shouldNotMatchWhenPricesDoNotCross() {
-        Order sellOrder = new Order("u2", "AAPL", OrderType.SELL, 151, 10, System.currentTimeMillis());
-        Order buyOrder = new Order("u3", "AAPL", OrderType.BUY, 150, 10, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 151, 10, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 150, 10, System.currentTimeMillis());
 
         orderBook.addOrder(sellOrder);
         List<Trade> trades = orderBook.addOrder(buyOrder);
@@ -94,8 +94,8 @@ class OrderBookTest {
 
     @Test
     void shouldMatchWhenSellPriceLowerThanBuyPrice() {
-        Order sellOrder = new Order("u2", "AAPL", OrderType.SELL, 150, 10, System.currentTimeMillis());
-        Order buyOrder = new Order("u3", "AAPL", OrderType.BUY, 155, 10, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 150, 10, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 155, 10, System.currentTimeMillis());
 
         orderBook.addOrder(sellOrder);
         List<Trade> trades = orderBook.addOrder(buyOrder);

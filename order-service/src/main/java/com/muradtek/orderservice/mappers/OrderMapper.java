@@ -14,19 +14,16 @@ import java.util.List;
 public class OrderMapper {
     public Order mapToOrder(SubmitOrderReqDto request) {
         return new Order(
-                request.userId(),
                 request.symbol(),
                 OrderType.valueOf(request.type()),
                 request.price(),
                 request.quantity(),
-                System.currentTimeMillis()
-        );
+                System.currentTimeMillis());
     }
 
     public SubmitOrderResDto mapToOrderResDto(Order order, List<Trade> trades) {
         return new SubmitOrderResDto(
                 order.getOrderId(),
-                order.getUserId(),
                 order.getSymbol(),
                 order.getType().name(),
                 order.getPrice(),
@@ -36,8 +33,7 @@ public class OrderMapper {
                 order.getTimestamp(),
                 trades.stream()
                         .map(this::mapToTradeResDto)
-                        .toList()
-                );
+                        .toList());
     }
 
     private TradeResDto mapToTradeResDto(Trade trade) {
@@ -47,7 +43,6 @@ public class OrderMapper {
                 trade.getSymbol(),
                 trade.getPrice(),
                 trade.getQuantity(),
-                trade.getTimestamp()
-        );
+                trade.getTimestamp());
     }
 }

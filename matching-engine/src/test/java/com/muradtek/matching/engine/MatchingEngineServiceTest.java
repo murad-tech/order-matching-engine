@@ -22,7 +22,7 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldSubmitBuyOrder() {
-        Order order = new Order("u1", "AAPL", OrderType.BUY, 150, 5, System.currentTimeMillis());
+        Order order = new Order("AAPL", OrderType.BUY, 150, 5, System.currentTimeMillis());
 
         List<Trade> trades = matchingEngine.submitOrder(order);
 
@@ -34,7 +34,7 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldSubmitSellOrder() {
-        Order order = new Order("u1", "AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
+        Order order = new Order("AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
 
         List<Trade> trades = matchingEngine.submitOrder(order);
 
@@ -44,8 +44,8 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldMatchPartialBuyAndUpdateRemainingQuantity() {
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
-        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 10, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 155, 10, System.currentTimeMillis());
 
         matchingEngine.submitOrder(sellOrder);
         List<Trade> trades = matchingEngine.submitOrder(buyOrder);
@@ -64,8 +64,8 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldMatchPartialSellAndUpdateRemainingQuantity() {
-        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 10, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 10, System.currentTimeMillis());
 
         matchingEngine.submitOrder(buyOrder);
         List<Trade> trades = matchingEngine.submitOrder(sellOrder);
@@ -84,9 +84,9 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldProcessMultipleBuyOrders() {
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 100, System.currentTimeMillis());
-        Order buyOrder1 = new Order("u1", "AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
-        Order buyOrder2 = new Order("u1", "AAPL", OrderType.BUY, 155, 100, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 100, System.currentTimeMillis());
+        Order buyOrder1 = new Order("AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
+        Order buyOrder2 = new Order("AAPL", OrderType.BUY, 155, 100, System.currentTimeMillis());
 
         matchingEngine.submitOrder(sellOrder);
         List<Trade> trades = matchingEngine.submitOrder(buyOrder1);
@@ -103,9 +103,9 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldProcessMultipleSellOrders() {
-        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 100, System.currentTimeMillis());
-        Order sellOrder1 = new Order("u1", "AAPL", OrderType.SELL, 155, 30, System.currentTimeMillis());
-        Order sellOrder2 = new Order("u1", "AAPL", OrderType.SELL, 155, 100, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 155, 100, System.currentTimeMillis());
+        Order sellOrder1 = new Order("AAPL", OrderType.SELL, 155, 30, System.currentTimeMillis());
+        Order sellOrder2 = new Order("AAPL", OrderType.SELL, 155, 100, System.currentTimeMillis());
 
         matchingEngine.submitOrder(buyOrder);
         List<Trade> trades = matchingEngine.submitOrder(sellOrder1);
@@ -122,9 +122,9 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldMatchTwoBuyOrdersWithOneSell() {
-        Order buyOrder1 = new Order("u1", "AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
-        Order buyOrder2 = new Order("u1", "AAPL", OrderType.BUY, 155, 70, System.currentTimeMillis());
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 200, System.currentTimeMillis());
+        Order buyOrder1 = new Order("AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
+        Order buyOrder2 = new Order("AAPL", OrderType.BUY, 155, 70, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 200, System.currentTimeMillis());
 
         matchingEngine.submitOrder(buyOrder1);
         matchingEngine.submitOrder(buyOrder2);
@@ -139,9 +139,9 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldMatchTwoSellOrdersWithOneBuy() {
-        Order sellOrder1 = new Order("u1", "AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
-        Order sellOrder2 = new Order("u1", "AAPL", OrderType.BUY, 155, 70, System.currentTimeMillis());
-        Order buyOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 200, System.currentTimeMillis());
+        Order sellOrder1 = new Order("AAPL", OrderType.BUY, 155, 30, System.currentTimeMillis());
+        Order sellOrder2 = new Order("AAPL", OrderType.BUY, 155, 70, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.SELL, 155, 200, System.currentTimeMillis());
 
         matchingEngine.submitOrder(sellOrder1);
         matchingEngine.submitOrder(sellOrder2);
@@ -156,8 +156,8 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldMatchOrdersForSameSymbol() {
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
-        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
 
         matchingEngine.submitOrder(sellOrder);
         List<Trade> trades = matchingEngine.submitOrder(buyOrder);
@@ -172,8 +172,8 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldHandleMultipleSymbols() {
-        Order appleOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
-        Order googleOrder = new Order("u1", "GOOGL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order appleOrder = new Order("AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order googleOrder = new Order("GOOGL", OrderType.BUY, 155, 5, System.currentTimeMillis());
 
         matchingEngine.submitOrder(appleOrder);
         matchingEngine.submitOrder(googleOrder);
@@ -187,8 +187,8 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldNotMatchOrdersForDifferentSymbols() {
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
-        Order buyOrder = new Order("u1", "GOOGL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 5, System.currentTimeMillis());
+        Order buyOrder = new Order("GOOGL", OrderType.BUY, 155, 5, System.currentTimeMillis());
 
         matchingEngine.submitOrder(sellOrder);
         List<Trade> trades = matchingEngine.submitOrder(buyOrder);
@@ -199,7 +199,7 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldCancelOrder() {
-        Order order = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order order = new Order("AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
         matchingEngine.submitOrder(order);
 
         boolean cancelled = matchingEngine.cancelOrder(order.getOrderId());
@@ -217,7 +217,7 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldRetrieveOrderById() {
-        Order order = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order order = new Order("AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
         matchingEngine.submitOrder(order);
 
         Order retrieved = matchingEngine.getOrder(order.getOrderId());
@@ -248,8 +248,8 @@ class MatchingEngineServiceTest {
 
     @Test
     void shouldHandlePartialFills() {
-        Order sellOrder = new Order("u1", "AAPL", OrderType.SELL, 155, 50, System.currentTimeMillis());
-        Order buyOrder = new Order("u1", "AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
+        Order sellOrder = new Order("AAPL", OrderType.SELL, 155, 50, System.currentTimeMillis());
+        Order buyOrder = new Order("AAPL", OrderType.BUY, 155, 5, System.currentTimeMillis());
 
         matchingEngine.submitOrder(sellOrder);
         List<Trade> trades = matchingEngine.submitOrder(buyOrder);

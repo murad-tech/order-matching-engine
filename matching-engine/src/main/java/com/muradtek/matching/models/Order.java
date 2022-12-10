@@ -10,7 +10,6 @@ import java.util.UUID;
 public class Order {
     private final String orderId = UUID.randomUUID().toString();
 
-    private final String userId;
     private final String symbol;
     private final OrderType type;
     private final double price;
@@ -19,8 +18,7 @@ public class Order {
     private OrderStatus status;
     private final long timestamp;
 
-    public Order(String userId, String symbol, OrderType type, double price, int quantity, long timestamp) {
-        this.userId = userId;
+    public Order(String symbol, OrderType type, double price, int quantity, long timestamp) {
         this.symbol = symbol;
         this.type = type;
         this.price = price;
