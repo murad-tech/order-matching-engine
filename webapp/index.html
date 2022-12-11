@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Order Matching Engine</title>
+		<link rel="stylesheet" href="components/variables.css" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<!-- Header -->
+			<header class="header">
+				<h1>Order Matching Engine</h1>
+			</header>
+			<footer class="footer">
+				<!-- Submit Order Form -->
+				<div class="order-heading">
+					<h2>Submit New Order</h2>
+					<div id="formMessage" class="form-message"></div>
+				</div>
+				<form id="orderForm" class="order-form">
+					<div class="form-group">
+						<label for="symbol">Symbol:</label>
+						<input type="text" id="symbol" name="symbol" value="AAPL" required />
+					</div>
+					<input type="hidden" id="orderType" name="orderType" required />
+					<div class="form-group">
+						<label for="price">Price:</label>
+						<input type="number" id="price" name="price" placeholder="100.0" required />
+					</div>
+					<div class="form-group">
+						<label for="quantity">Quantity:</label>
+						<input type="number" id="quantity" name="quantity" placeholder="10" required />
+					</div>
+					<div id="form-group-buttons">
+						<button type="submit" class="btn-buy" id="btnBuy">BUY</button>
+						<button type="submit" class="btn-sell" id="btnSell">SELL</button>
+					</div>
+				</form>
+			</footer>
+		</div>
+	</body>
+</html>

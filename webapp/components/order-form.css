@@ -1,0 +1,98 @@
+.order-heading {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--spacing-md);
+}
+.order-form {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr) 200px;
+	gap: var(--spacing-md);
+	align-items: end;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-group label {
+	font-size: 0.7rem;
+	color: var(--text-secondary);
+	margin-bottom: var(--spacing-xs);
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+}
+
+.form-group input,
+.form-group select {
+	background-color: var(--bg-tertiary);
+	border: 2px solid var(--border-color);
+	color: var(--text-primary);
+	padding: 10px 12px;
+	font-size: 0.875rem;
+	font-family: var(--font-mono);
+	font-weight: 600;
+	transition: var(--transition);
+	outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+	border-color: var(--text-primary);
+	background-color: var(--bg-secondary);
+}
+
+.form-group input::placeholder {
+	color: var(--text-muted);
+}
+
+.form-group-buttons {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--spacing-sm);
+}
+
+.btn-buy,
+.btn-sell {
+	border: 2px solid;
+	padding: 10px 16px;
+	font-size: 0.875rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: var(--transition);
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+	box-shadow: var(--shadow-sm);
+}
+
+.btn-buy {
+	background-color: var(--bg-secondary);
+	color: var(--color-buy);
+	border-color: var(--color-buy);
+}
+
+.btn-buy:hover {
+	background-color: var(--color-buy);
+	color: var(--bg-secondary);
+	box-shadow: var(--shadow-md);
+}
+
+.btn-sell {
+	background-color: var(--bg-secondary);
+	color: var(--color-sell);
+	border-color: var(--color-sell);
+}
+
+.btn-sell:hover {
+	background-color: var(--color-sell);
+	color: var(--bg-secondary);
+	box-shadow: var(--shadow-md);
+}
+
+.btn-buy:active,
+.btn-sell:active {
+	box-shadow: none;
+	transform: translate(2px, 2px);
+}
