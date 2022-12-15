@@ -11,12 +11,18 @@
 	--accent-secondary: #f4a261;
 	--border-color: #cccccc;
 	--bg-tertiary: #e0e0d1;
+	--bg-hover: #e8e8e0;
 
 	/* BUY/SELL buttons */
 	--color-buy: #2d7a5f;
 	--color-buy-light: #e8f5f0;
 	--color-sell: #c44536;
 	--color-sell-light: #fef0ee;
+
+	--color-success: #2d7a5f;
+	--color-error: #c44536;
+	--color-warning: #d4841f;
+	--color-info: #3f72af;
 
 	--spacing-xs: 4px;
 	--spacing-sm: 8px;

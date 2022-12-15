@@ -4,9 +4,12 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Order Matching Engine</title>
-		<link rel="stylesheet" href="components/variables.css" />
+		<link rel="stylesheet" href="styles/variables.css" />
 		<link rel="stylesheet" href="styles.css" />
 		<script defer src="./components/handlers.js"></script>
+		<script defer src="./components/order-item.html.js"></script>
+		<script defer src="./components/ui.js"></script>
+		<script defer src="./components/api.js"></script>
 		<script defer src="app.js"></script>
 	</head>
 	<body>
@@ -15,6 +18,46 @@
 			<header class="header">
 				<h1>Order Matching Engine</h1>
 			</header>
+			<!-- Main Content Grid -->
+			<main class="main-grid">
+				<!-- Bids Section -->
+				<section class="orders-section panel">
+					<div class="panel-header">
+						<h2>Bids</h2>
+						<span class="badge badge-buy" id="bidsCount">0</span>
+					</div>
+					<div class="panel-content">
+						<div class="best-price-display best-bid">
+							<span class="best-price-label">Best Bid</span>
+							<span class="best-price-value" id="bestBidPrice">-</span>
+						</div>
+						<div id="bidOrdersList" class="orders-list">
+							<div class="empty-state">
+								<p>No buy orders</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Asks Section -->
+				<section class="orders-section panel">
+					<div class="panel-header">
+						<h2>Asks</h2>
+						<span class="badge badge-sell" id="asksCount">0</span>
+					</div>
+					<div class="panel-content">
+						<div class="best-price-display best-ask">
+							<span class="best-price-label">Best Ask</span>
+							<span class="best-price-value" id="bestAskPrice">-</span>
+						</div>
+						<div id="askOrdersList" class="orders-list">
+							<div class="empty-state">
+								<p>No sell orders</p>
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
 			<footer class="footer">
 				<!-- Submit Order Form -->
 				<div class="order-heading">

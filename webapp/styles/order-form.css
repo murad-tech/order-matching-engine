@@ -96,3 +96,26 @@
 	box-shadow: none;
 	transform: translate(2px, 2px);
 }
+
+.form-message {
+	padding: var(--spacing-sm) var(--spacing-md);
+	font-size: 0.875rem;
+	display: none;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.form-message.success {
+	background-color: var(--color-buy-light);
+	border-color: var(--color-success);
+	color: var(--color-success);
+	display: block;
+}
+
+.form-message.error {
+	background-color: var(--color-sell-light);
+	border-color: var(--color-error);
+	color: var(--color-error);
+	display: block;
+}
