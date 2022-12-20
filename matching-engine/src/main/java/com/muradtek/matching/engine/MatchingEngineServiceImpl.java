@@ -109,10 +109,8 @@ public class MatchingEngineServiceImpl implements MatchingEngineService {
         return orderBook != null ? orderBook.getTotalOrders() : 0;
     }
 
-    /**
-     * Gets the order book for a specific symbol (for testing/monitoring).
-     */
-    protected OrderBook getOrderBook(String symbol) {
+    @Override
+    public OrderBook getOrderBook(String symbol) {
         return orderBooks.get(symbol);
     }
 }

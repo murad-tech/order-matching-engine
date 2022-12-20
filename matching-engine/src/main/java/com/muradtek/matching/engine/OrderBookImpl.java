@@ -187,5 +187,13 @@ public class OrderBookImpl implements OrderBook {
     @Override
     public int getTotalOrders() {
         return orderMap.size();
+}
+
+    public TreeMap<Double, LinkedList<Order>> getBuyOrders() {
+        return buyOrders;
+    }
+
+    public TreeMap<Double, LinkedList<Order>> getSellOrders() {
+        return sellOrders;
     }
 }

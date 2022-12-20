@@ -3,7 +3,9 @@ package com.muradtek.matching.engine;
 import com.muradtek.matching.models.Order;
 import com.muradtek.matching.models.Trade;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 public interface OrderBook {
 
@@ -39,4 +41,14 @@ public interface OrderBook {
      * @return Total number of active orders in the book
      */
     int getTotalOrders();
+
+    /**
+     * @return Buy orders map
+     */
+    TreeMap<Double, LinkedList<Order>> getBuyOrders();
+
+    /**
+     * @return Sell orders map
+     */
+    TreeMap<Double, LinkedList<Order>> getSellOrders();
 }

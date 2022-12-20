@@ -58,4 +58,12 @@ public interface MatchingEngineService {
      * @return Order count for symbol
      */
     int getTotalOrdersForSymbol(String symbol);
+
+    /**
+     * Gets the order book for a specific symbol.
+     * @param symbol Trading symbol
+     * @return OrderBook or null if symbol does not exist
+     */
+    OrderBook getOrderBook(String symbol);
 }
+

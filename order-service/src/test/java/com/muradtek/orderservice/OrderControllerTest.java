@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,9 +25,10 @@ import com.muradtek.orderservice.controllers.OrderController;
 import com.muradtek.orderservice.dto.SubmitOrderReqDto;
 import com.muradtek.orderservice.mappers.OrderMapper;
 import com.muradtek.orderservice.config.SecurityConfig;
+import com.muradtek.orderservice.websocket.OrderBookBroadcaster;
 
 @WebMvcTest(OrderController.class)
-@Import({ OrderMapper.class, SecurityConfig.class })
+@Import({OrderMapper.class, SecurityConfig.class})
 class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -38,6 +38,9 @@ class OrderControllerTest {
 
     @MockBean
     private MatchingEngineService matchingEngineService;
+
+    @MockBean
+    private OrderBookBroadcaster orderBookBroadcaster;
 
     @Test
     void shouldSubmitOrderSuccessfully() throws Exception {
@@ -81,6 +84,9 @@ class OrderControllerTest {
     @Test
     void shouldCancelOrderSuccessfully() throws Exception {
         when(matchingEngineService.cancelOrder("order-123")).thenReturn(true);
+        Order mockOrder = new Order(
+                "AAPL", OrderType.BUY, 150.0, 10, System.currentTimeMillis());
+        when(matchingEngineService.getOrder("order-123")).thenReturn(mockOrder);
 
         mockMvc.perform(delete("/api/v1/orders/{orderId}", "order-123")
                 .contentType(MediaType.APPLICATION_JSON))

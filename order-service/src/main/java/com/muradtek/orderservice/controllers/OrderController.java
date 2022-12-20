@@ -6,13 +6,13 @@ import com.muradtek.matching.models.Trade;
 import com.muradtek.orderservice.dto.SubmitOrderReqDto;
 import com.muradtek.orderservice.dto.SubmitOrderResDto;
 import com.muradtek.orderservice.mappers.OrderMapper;
+import com.muradtek.orderservice.websocket.OrderBookBroadcaster;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -21,19 +21,25 @@ import java.util.List;
 public class OrderController {
     private final MatchingEngineService matchingEngineService;
     private final OrderMapper orderMapper;
+    private final OrderBookBroadcaster orderBookBroadcaster;
 
     public OrderController(MatchingEngineService matchingEngineService,
-                           OrderMapper orderMapper) {
+            OrderMapper orderMapper,
+            OrderBookBroadcaster orderBookBroadcaster) {
         this.matchingEngineService = matchingEngineService;
         this.orderMapper = orderMapper;
+        this.orderBookBroadcaster = orderBookBroadcaster;
     }
 
     @PostMapping
     public ResponseEntity<SubmitOrderResDto> submitOrder(
-            @RequestBody @Valid SubmitOrderReqDto request) throws URISyntaxException {
+            @RequestBody @Valid SubmitOrderReqDto request) throws Exception {
 
         Order order = orderMapper.mapToOrder(request);
         List<Trade> trades = matchingEngineService.submitOrder(order);
+
+        // Broadcast updated order book
+        orderBookBroadcaster.broadcastOrderBookUpdate(order.getSymbol());
 
         return ResponseEntity.created(new URI("/orders/" + order.getOrderId()))
                 .body(orderMapper.mapToOrderResDto(order, trades));
@@ -50,8 +56,15 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> cancelOrder(@PathVariable String orderId) {
+    public ResponseEntity<Void> cancelOrder(@PathVariable String orderId) throws Exception {
+        Order order = matchingEngineService.getOrder(orderId);
         boolean result = matchingEngineService.cancelOrder(orderId);
+
+        // Broadcast updated order book if cancellation was successful
+        if (result && order != null) {
+            orderBookBroadcaster.broadcastOrderBookUpdate(order.getSymbol());
+        }
+
         return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
