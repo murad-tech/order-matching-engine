@@ -33,4 +33,12 @@ const API = {
 
 		return await response.json();
 	},
+
+	async getOrderBook(symbol) {
+		const response = await fetch(`${CONFIG.API_BASE_URL}/orders/orderbook/${symbol}`);
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch order book');
+		}
+	},
 };

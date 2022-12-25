@@ -21,7 +21,7 @@ public class OrderBookBroadcaster {
     /**
      * Broadcasts current order book for a symbol to all connected clients
      */
-    public void broadcastOrderBookUpdate(String ticker) throws Exception {
+    public void broadcastOrderBook(String ticker) throws Exception {
         OrderBook orderBook = matchingEngineService.getOrderBook(ticker);
         if (orderBook != null)
             webSocketHandler.broadcastOrderBook(orderBook);

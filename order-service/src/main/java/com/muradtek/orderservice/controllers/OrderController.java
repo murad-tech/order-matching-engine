@@ -39,7 +39,7 @@ public class OrderController {
         List<Trade> trades = matchingEngineService.submitOrder(order);
 
         // Broadcast updated order book
-        orderBookBroadcaster.broadcastOrderBookUpdate(order.getSymbol());
+        orderBookBroadcaster.broadcastOrderBook(order.getSymbol());
 
         return ResponseEntity.created(new URI("/orders/" + order.getOrderId()))
                 .body(orderMapper.mapToOrderResDto(order, trades));
@@ -54,6 +54,12 @@ public class OrderController {
 
         return ResponseEntity.ok(order);
     }
+    
+    @GetMapping("/orderbook/{symbol}")
+    public ResponseEntity<Void> getOrdersForSymbolWS(@PathVariable String symbol) throws Exception {
+        orderBookBroadcaster.broadcastOrderBook(symbol);
+        return ResponseEntity.noContent().build();
+    }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> cancelOrder(@PathVariable String orderId) throws Exception {
@@ -61,9 +67,8 @@ public class OrderController {
         boolean result = matchingEngineService.cancelOrder(orderId);
 
         // Broadcast updated order book if cancellation was successful
-        if (result && order != null) {
-            orderBookBroadcaster.broadcastOrderBookUpdate(order.getSymbol());
-        }
+        if (result && order != null)
+            orderBookBroadcaster.broadcastOrderBook(order.getSymbol());
 
         return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }

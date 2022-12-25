@@ -1,6 +1,7 @@
 const CONFIG = {
 	API_BASE_URL: 'http://localhost:8080/api/v1', // TODO: Move to environment variable file
 	TIMEOUT_MS: 5000,
+	MAX_ORDERS_DISPLAY: 10,
 };
 const STATE = {
 	orders: new Map(),
@@ -34,27 +35,6 @@ function init() {
 	document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
 
 	console.log('UI initialized successfully!');
-
-	STATE.orders.set('1', {
-		orderId: '1',
-		symbol: 'AAPL',
-		type: 'BUY',
-		price: 150.0,
-		quantity: 10,
-		remainingQuantity: 10,
-		status: 'PENDING',
-		timestamp: new Date().toISOString(),
-	});
-	STATE.orders.set('2', {
-		orderId: '2',
-		symbol: 'AAPL',
-		type: 'SELL',
-		price: 155.0,
-		quantity: 5,
-		remainingQuantity: 5,
-		status: 'PARTIALLY_FILLED',
-		timestamp: new Date().toISOString(),
-	});
 
 	UI.renderOrders();
 }

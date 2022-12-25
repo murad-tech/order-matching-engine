@@ -1,6 +1,3 @@
-// Simple WebSocket OrderBook Monitor
-// Connects to ws://localhost:8080/ws/orderbook and logs updates to console
-
 const OrderBookMonitor = {
 	ws: null,
 	isConnected: false,
@@ -12,6 +9,7 @@ const OrderBookMonitor = {
 	connect() {
 		const wsUrl = `ws://localhost:8080/ws/orderbook`;
 		console.log('Connecting to WebSocket:', wsUrl);
+		const symbol = document.getElementById('symbol').value;
 
 		try {
 			this.ws = new WebSocket(wsUrl);
@@ -20,14 +18,15 @@ const OrderBookMonitor = {
 				this.isConnected = true;
 				console.log('✓ WebSocket connected!');
 				console.log('Listening for OrderBook updates...');
+				API.getOrderBook(symbol);
 			};
 
 			this.ws.onmessage = (event) => {
 				try {
 					const orderBook = JSON.parse(event.data);
-					console.log('📊 OrderBook Update:', orderBook);
-				} catch (e) {
-					console.error('Error parsing message:', e);
+					this.processOrderBook(orderBook);
+				} catch (error) {
+					console.error('Failed to parse OrderBook message:', error);
 				}
 			};
 
@@ -47,6 +46,47 @@ const OrderBookMonitor = {
 	disconnect() {
 		if (this.ws) {
 			this.ws.close();
+		}
+	},
+
+	processOrderBook(orderBook) {
+		// Clear existing orders and repopulate from orderBook
+		STATE.orders.clear();
+		STATE.orderBook = orderBook;
+
+		// Process bids (BUY orders)
+		if (orderBook.buyOrders && Array.isArray(orderBook.buyOrders)) {
+			orderBook.buyOrders.forEach((bid, index) => {
+				const orderId = `bid-${bid.price}-${index}`;
+				STATE.orders.set(orderId, {
+					symbol: bid.symbol || 'UNKNOWN',
+					type: 'BUY',
+					price: parseFloat(bid.price),
+					remainingQuantity: parseFloat(bid.remainingQuantity),
+					status: bid.status || 'PENDING',
+					timestamp: new Date().toISOString(),
+				});
+			});
+		}
+
+		// Process asks (SELL orders)
+		if (orderBook.sellOrders && Array.isArray(orderBook.sellOrders)) {
+			orderBook.sellOrders.forEach((ask, index) => {
+				const orderId = `ask-${ask.price}-${index}`;
+				STATE.orders.set(orderId, {
+					symbol: ask.symbol || 'UNKNOWN',
+					type: 'SELL',
+					price: parseFloat(ask.price),
+					remainingQuantity: parseFloat(ask.remainingQuantity),
+					status: ask.status || 'PENDING',
+					timestamp: new Date().toISOString(),
+				});
+			});
+		}
+
+		// Render the updated orders on UI
+		if (typeof UI !== 'undefined' && UI.renderOrders) {
+			UI.renderOrders();
 		}
 	},
 };
