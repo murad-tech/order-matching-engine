@@ -1,7 +1,6 @@
 function handleOrderSubmit(event) {
 	event.preventDefault();
 
-	// Disable buttons and show loading state
 	const btnBuy = document.getElementById('btnBuy');
 	const btnSell = document.getElementById('btnSell');
 	btnBuy.disabled = true;
@@ -19,11 +18,9 @@ function handleOrderSubmit(event) {
 		type: formData.get('orderType'),
 	};
 
-	// Show loading message
 	formMessage.className = 'form-message loading';
 	formMessage.textContent = 'Submitting order...';
 
-	// Make POST request to backend API
 	fetch(`${CONFIG.API_BASE_URL}/orders`, {
 		method: 'POST',
 		headers: {
@@ -33,7 +30,6 @@ function handleOrderSubmit(event) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			console.log('Order response:', data);
 			formMessage.className = 'form-message success';
 			formMessage.textContent = `Order submitted successfully! ${data.symbol}[${data.type}] @${data.price}: ${data.quantity}`;
 		})
@@ -43,13 +39,50 @@ function handleOrderSubmit(event) {
 			formMessage.textContent = `Error: ${error.message}`;
 		})
 		.finally(() => {
-			// Re-enable both buttons
 			btnBuy.disabled = false;
 			btnSell.disabled = false;
 			btnBuy.innerHTML = '<span>BUY</span>';
 			btnSell.innerHTML = '<span>SELL</span>';
 
-			// Clear message after 1 second
+			setTimeout(() => {
+				formMessage.className = '';
+				formMessage.textContent = '';
+			}, 2000);
+		});
+}
+
+function handleCancelOrder(orderId) {
+	const formMessage = document.getElementById('formMessage');
+
+	formMessage.className = 'form-message loading';
+	formMessage.textContent = 'Cancelling order...';
+
+	API.cancelOrder(orderId)
+		.then((response) => {
+			if (response.ok) {
+				formMessage.className = 'form-message success';
+				formMessage.textContent = `Order ${orderId} cancelled successfully!`;
+
+				const orderElement = document.querySelector(`[data-order-id="${orderId}"]`);
+				if (orderElement) {
+					orderElement.remove();
+				}
+
+				UI.renderOrders();
+			} else if (response.status === 404) {
+				formMessage.className = 'form-message error';
+				formMessage.textContent = 'Order not found or already cancelled';
+			} else {
+				formMessage.className = 'form-message error';
+				formMessage.textContent = 'Failed to cancel order';
+			}
+		})
+		.catch((error) => {
+			console.error('Error cancelling order:', error);
+			formMessage.className = 'form-message error';
+			formMessage.textContent = `Error: ${error.message}`;
+		})
+		.finally(() => {
 			setTimeout(() => {
 				formMessage.className = '';
 				formMessage.textContent = '';

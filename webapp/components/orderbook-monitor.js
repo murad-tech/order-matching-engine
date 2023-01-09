@@ -8,7 +8,6 @@ const OrderBookMonitor = {
 
 	connect() {
 		const wsUrl = `ws://localhost:8080/ws/orderbook`;
-		console.log('Connecting to WebSocket:', wsUrl);
 		const symbol = document.getElementById('symbol').value;
 
 		try {
@@ -17,7 +16,6 @@ const OrderBookMonitor = {
 			this.ws.onopen = () => {
 				this.isConnected = true;
 				console.log('✓ WebSocket connected!');
-				console.log('Listening for OrderBook updates...');
 				API.getOrderBook(symbol);
 			};
 
@@ -56,9 +54,9 @@ const OrderBookMonitor = {
 
 		// Process bids (BUY orders)
 		if (orderBook.buyOrders && Array.isArray(orderBook.buyOrders)) {
-			orderBook.buyOrders.forEach((bid, index) => {
-				const orderId = `bid-${bid.price}-${index}`;
-				STATE.orders.set(orderId, {
+			orderBook.buyOrders.forEach((bid) => {
+				STATE.orders.set(bid.orderId, {
+					orderId: bid.orderId,
 					symbol: bid.symbol || 'UNKNOWN',
 					type: 'BUY',
 					price: parseFloat(bid.price),
@@ -72,8 +70,8 @@ const OrderBookMonitor = {
 		// Process asks (SELL orders)
 		if (orderBook.sellOrders && Array.isArray(orderBook.sellOrders)) {
 			orderBook.sellOrders.forEach((ask, index) => {
-				const orderId = `ask-${ask.price}-${index}`;
-				STATE.orders.set(orderId, {
+				STATE.orders.set(ask.orderId, {
+					orderId: ask.orderId,
 					symbol: ask.symbol || 'UNKNOWN',
 					type: 'SELL',
 					price: parseFloat(ask.price),

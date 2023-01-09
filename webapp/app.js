@@ -1,5 +1,5 @@
 const CONFIG = {
-	API_BASE_URL: 'http://localhost:8080/api/v1', // TODO: Move to environment variable file
+	API_BASE_URL: 'http://localhost:8080/api/v1',
 	TIMEOUT_MS: 5000,
 	MAX_ORDERS_DISPLAY: 10,
 };

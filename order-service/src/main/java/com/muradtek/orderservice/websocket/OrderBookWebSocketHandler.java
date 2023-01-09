@@ -60,6 +60,7 @@ public class OrderBookWebSocketHandler extends TextWebSocketHandler {
         return ordersMap.entrySet().stream()
                 .flatMap(entry -> entry.getValue().stream())
                 .map(order -> new OrderSlimResDto(
+                        order.getOrderId(),
                         order.getSymbol(),
                         order.getType().toString(),
                         order.getPrice(),

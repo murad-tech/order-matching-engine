@@ -21,7 +21,7 @@ const API = {
 			method: 'DELETE',
 		});
 
-		return response.ok;
+		return response;
 	},
 
 	async getOrder(orderId) {
