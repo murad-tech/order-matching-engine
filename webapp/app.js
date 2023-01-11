@@ -34,7 +34,8 @@ function init() {
 
 	document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
 
-	console.log('UI initialized successfully!');
+	const symbolInput = document.getElementById('symbol');
+	symbolInput.addEventListener('blur', handleSymbolChange);
 
 	UI.renderOrders();
 }

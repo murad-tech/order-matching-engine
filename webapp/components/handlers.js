@@ -89,3 +89,38 @@ function handleCancelOrder(orderId) {
 			}, 2000);
 		});
 }
+
+function handleSymbolChange(event) {
+	const symbol = event.target.value.trim();
+	STATE.orderBook = { bids: [], asks: [] };
+	STATE.orders.clear();
+	UI.renderOrders();
+
+	if (!symbol) return;
+
+	const formMessage = document.getElementById('formMessage');
+	formMessage.className = 'form-message loading';
+	formMessage.textContent = `Fetching orders for ${symbol}...`;
+
+	API.getOrderBook(symbol)
+		.then((response) => {
+			if (response.ok) {
+				formMessage.className = 'form-message success';
+				formMessage.textContent = `Orders for ${symbol} loaded successfully!`;
+			} else {
+				formMessage.className = 'form-message error';
+				formMessage.textContent = `No orders found for ${symbol}`;
+			}
+		})
+		.catch((error) => {
+			console.error('Error fetching orders:', error);
+			formMessage.className = 'form-message error';
+			formMessage.textContent = `Error: ${error.message}`;
+		})
+		.finally(() => {
+			setTimeout(() => {
+				formMessage.className = '';
+				formMessage.textContent = '';
+			}, 2000);
+		});
+}
