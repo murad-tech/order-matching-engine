@@ -140,8 +140,7 @@ public class OrderBookImpl implements OrderBook {
      * Adds order to appropriate side of the book.
      */
     private void addToBook(Order order) {
-        TreeMap<Double, LinkedList<Order>> book =
-                order.getType() == OrderType.BUY ? buyOrders : sellOrders;
+        TreeMap<Double, LinkedList<Order>> book = order.getType() == OrderType.BUY ? buyOrders : sellOrders;
 
         book.computeIfAbsent(order.getPrice(), k -> new LinkedList<>())
                 .addLast(order);
@@ -152,8 +151,7 @@ public class OrderBookImpl implements OrderBook {
     @Override
     public Order cancelOrder(String orderId) {
         Order order = orderMap.get(orderId);
-        TreeMap<Double, LinkedList<Order>> book =
-                order.getType() == OrderType.BUY ? buyOrders : sellOrders;
+        TreeMap<Double, LinkedList<Order>> book = order.getType() == OrderType.BUY ? buyOrders : sellOrders;
 
         LinkedList<Order> ordersAtPrice = book.get(order.getPrice());
         if (ordersAtPrice != null) {
@@ -187,7 +185,7 @@ public class OrderBookImpl implements OrderBook {
     @Override
     public int getTotalOrders() {
         return orderMap.size();
-}
+    }
 
     public TreeMap<Double, LinkedList<Order>> getBuyOrders() {
         return buyOrders;
@@ -195,5 +193,10 @@ public class OrderBookImpl implements OrderBook {
 
     public TreeMap<Double, LinkedList<Order>> getSellOrders() {
         return sellOrders;
+    }
+
+    @Override
+    public String getSymbol() {
+        return symbol;
     }
 }

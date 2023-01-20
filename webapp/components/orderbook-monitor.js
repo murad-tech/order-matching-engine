@@ -16,6 +16,9 @@ const OrderBookMonitor = {
 			this.ws.onopen = () => {
 				this.isConnected = true;
 				console.log('✓ WebSocket connected!');
+				if (symbol) {
+					this.setSymbol(symbol);
+				}
 				API.getOrderBook(symbol);
 			};
 
@@ -44,6 +47,17 @@ const OrderBookMonitor = {
 	disconnect() {
 		if (this.ws) {
 			this.ws.close();
+		}
+	},
+
+	setSymbol(symbol) {
+		if (this.ws && this.isConnected) {
+			const message = JSON.stringify({
+				action: 'setSymbol',
+				symbol: symbol,
+			});
+			this.ws.send(message);
+			console.log('Symbol sent to server:', symbol);
 		}
 	},
 

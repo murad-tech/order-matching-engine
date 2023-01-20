@@ -102,6 +102,10 @@ function handleSymbolChange(event) {
 	formMessage.className = 'form-message loading';
 	formMessage.textContent = `Fetching orders for ${symbol}...`;
 
+	if (typeof OrderBookMonitor !== 'undefined') {
+		OrderBookMonitor.setSymbol(symbol);
+	}
+
 	API.getOrderBook(symbol)
 		.then((response) => {
 			if (response.ok) {

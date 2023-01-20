@@ -14,9 +14,9 @@ public class Order {
     private final OrderType type;
     private final double price;
     private final int quantity; // integer - fractional shares out of scope
+    private final long timestamp;
     private int remainingQuantity; // if there are no enough matching Orders
     private OrderStatus status;
-    private final long timestamp;
 
     public Order(String symbol, OrderType type, double price, int quantity, long timestamp) {
         this.symbol = symbol;

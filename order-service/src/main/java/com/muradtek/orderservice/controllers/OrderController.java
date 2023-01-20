@@ -24,8 +24,8 @@ public class OrderController {
     private final OrderBookBroadcaster orderBookBroadcaster;
 
     public OrderController(MatchingEngineService matchingEngineService,
-            OrderMapper orderMapper,
-            OrderBookBroadcaster orderBookBroadcaster) {
+                           OrderMapper orderMapper,
+                           OrderBookBroadcaster orderBookBroadcaster) {
         this.matchingEngineService = matchingEngineService;
         this.orderMapper = orderMapper;
         this.orderBookBroadcaster = orderBookBroadcaster;
@@ -54,7 +54,7 @@ public class OrderController {
 
         return ResponseEntity.ok(order);
     }
-    
+
     @GetMapping("/orderbook/{symbol}")
     public ResponseEntity<Void> getOrdersForSymbolWS(@PathVariable String symbol) throws Exception {
         orderBookBroadcaster.broadcastOrderBook(symbol);

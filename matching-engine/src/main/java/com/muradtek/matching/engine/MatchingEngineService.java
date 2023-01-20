@@ -13,6 +13,7 @@ public interface MatchingEngineService {
 
     /**
      * Submits a new order to the matching engine.
+     *
      * @param order Order to submit
      * @return List of trades generated from matching
      */
@@ -20,6 +21,7 @@ public interface MatchingEngineService {
 
     /**
      * Cancels an order by orderId.
+     *
      * @param orderId Order ID to cancel
      * @return true if cancelled, false if not found or already filled
      */
@@ -27,6 +29,7 @@ public interface MatchingEngineService {
 
     /**
      * Retrieves an order by orderId.
+     *
      * @param orderId Order ID to retrieve
      * @return Order or null if not found
      */
@@ -34,6 +37,7 @@ public interface MatchingEngineService {
 
     /**
      * Gets best bid price for a symbol.
+     *
      * @param symbol Trading symbol
      * @return Best bid price or null if no buy orders
      */
@@ -41,6 +45,7 @@ public interface MatchingEngineService {
 
     /**
      * Gets best ask price for a symbol.
+     *
      * @param symbol Trading symbol
      * @return Best ask price or null if no sell orders
      */
@@ -48,12 +53,14 @@ public interface MatchingEngineService {
 
     /**
      * Gets total number of active orders across all symbols.
+     *
      * @return Total order count
      */
     int getTotalOrders();
 
     /**
      * Gets total number of active orders for a specific symbol.
+     *
      * @param symbol Trading symbol
      * @return Order count for symbol
      */
@@ -61,6 +68,7 @@ public interface MatchingEngineService {
 
     /**
      * Gets the order book for a specific symbol.
+     *
      * @param symbol Trading symbol
      * @return OrderBook or null if symbol does not exist
      */

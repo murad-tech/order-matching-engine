@@ -11,18 +11,21 @@ public interface OrderBook {
 
     /**
      * Adds order to the book and attempts to match it.
+     *
      * @return List of trades generated from matching
      */
     List<Trade> addOrder(Order order);
 
     /**
      * Cancels an order by orderId.
+     *
      * @return true if order was cancelled, false if not found or already filled
      */
     Order cancelOrder(String orderId);
 
     /**
      * Gets order by orderId.
+     *
      * @return Order or null if not found
      */
     Order getOrder(String orderId);
@@ -51,4 +54,9 @@ public interface OrderBook {
      * @return Sell orders map
      */
     TreeMap<Double, LinkedList<Order>> getSellOrders();
+
+    /**
+     * @return The symbol for this order book
+     */
+    String getSymbol();
 }
