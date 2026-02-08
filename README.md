@@ -2,7 +2,8 @@
 
 A real-time order matching engine with a classic/retro web interface. This MVP implementation matches buy and sell orders for stocks/currencies using price-time priority matching algorithm with WebSocket-based real-time updates.
 
-<video src="media/demo.mp4" controls autoplay loop muted></video>
+Demo video: [YouTube](https://youtu.be/QSEiNYoG-7w)  
+[![Order Matching Engine Demo](https://img.youtube.com/vi/QSEiNYoG-7w/maxresdefault.jpg)](https://youtu.be/QSEiNYoG-7w)
 
 ## Overview
 
